@@ -3,8 +3,6 @@ import { onMount } from 'svelte';
 import * as d3 from 'd3';
 import { csv, json } from 'd3-fetch';
 import { geoPath, geoMercator } from 'd3-geo';
-import { extent } from 'd3-array';
-import { geoBounds } from 'd3-geo';
 import { scaleLinear } from 'd3-scale';
 import { flip } from 'svelte/animate';
 import { innerWidth } from 'svelte/reactivity/window';
@@ -153,7 +151,9 @@ const autoplayYears = () => {
         bind:value={selectedYear}
         onclick={stopAutoplay}
         />
-    <p class="info year">Year: {selectedYear}</p>
+    <div class="year-container">
+        <p class="info year">Year: {selectedYear}</p>
+    </div>
 </div>
 </div>
 
@@ -226,6 +226,7 @@ const autoplayYears = () => {
         -webkit-appearance: none; /* Override default look */
         appearance: none;
         background-color: var(--red);
+        background-color: rgb(255, 120, 0);
         height: 1.5rem;
         width: 1.5rem;    
         transition: all;
@@ -238,7 +239,10 @@ const autoplayYears = () => {
         text-align: center;
         text-decoration: underline;
         text-decoration-color: var(--red);
-        margin: 0.5rem;
+    }
+
+    .year-container {
+        width: 6rem;
     }
 
     .play-button {
