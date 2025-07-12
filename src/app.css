@@ -39,7 +39,7 @@
   --orange: #f9ad6a;
   --red: #f9307f;
   --dark: #222222;
-  --bright: #EDE8D0;
+  --bright: #FFFFE7;
 }
 
 html, body {
@@ -56,6 +56,19 @@ h1, h2, h3 {
 
 p {
     font-family: 'Newsreader';
+}
+
+button {
+    border: none;
+    background-color: var(--yellow);
+    margin: 0;
+    text-decoration: none;
+    font-family: sans-serif;
+    font-size: 1rem;
+    cursor: pointer;
+    text-align: center;
+    transition: background 250ms ease-in-out, 
+                transform 150ms ease;
 }
 
 .info {

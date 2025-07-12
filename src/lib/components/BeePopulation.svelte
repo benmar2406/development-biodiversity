@@ -8,6 +8,7 @@ import { geoBounds } from 'd3-geo';
 import { scaleLinear } from 'd3-scale';
 import { flip } from 'svelte/animate';
 import { innerWidth } from 'svelte/reactivity/window';
+import { base } from '$app/paths';
 
 
 let geojson = $state(null);
@@ -21,14 +22,15 @@ let path = $state();
 let spikeScale = $state(0);
 let hoveredCountry = $state("Hover over a country");
 let mapX = $state(200);
-
+let autoplayInterval = $state(null); 
+let autoplayActive = $state(false);
 
 onMount(async () => {
-    geojson = await json('/data/countries.json');
+    geojson = await json(`${base}/data/countries.json`);
     projection = geoMercator().scale(400).translate([mapX, 550]);
     path = geoPath(projection);
     
-    data = await csv('/data/bees.csv', d => ({
+    data = await csv(`${base}/data/bees.csv`, d => ({
         countryCode: +d["Area Code (M49)"],
         population: +d.Value,
         year: +d.Year
@@ -45,7 +47,7 @@ onMount(async () => {
 });
 
 function spike(height) {
-  const width = 20; // base width of triangle
+  const width = 10; // base width of triangle
   return `M${-width / 2},0L0,${-height}L${width / 2},0Z`;
 }
 
@@ -62,6 +64,37 @@ $effect(() => {
     innerWidth.current < 200 ? mapX = 100 : 250;
 })
 
+//player
+const autoplayYears = () => {
+        if (autoplayActive) {
+            // If autoplay is active, stop it
+            if (autoplayInterval) {
+                clearInterval(autoplayInterval);
+                autoplayInterval = null;
+            }
+        } else {
+            // If autoplay is not active, start it
+            autoplayInterval = setInterval(() => {
+                if (selectedYear <= 2022) {
+                    selectedYear++;
+                } else {
+                    clearInterval(autoplayInterval);
+                    autoplayInterval = null;
+                    autoplayActive = false;
+                }
+            }, 200);
+        }
+        autoplayActive = !autoplayActive; // Toggle the state
+    };
+
+    const stopAutoplay = () => {
+        if (autoplayInterval) {
+            clearInterval(autoplayInterval);
+            autoplayInterval = null;
+            autoplayActive = false; // Ensure state is updated
+        }
+    };
+
 </script>
 <div class="map-container">
     <p class="info">Bees in: {hoveredCountry}</p>
@@ -70,8 +103,9 @@ $effect(() => {
             <svg class="map-land" {width} {height}>
                 <defs>
                     <linearGradient id="spike-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                        <stop offset="0%" stop-color="#f9307f" />
-                        <stop offset="100%" stop-color="#F9AD6A" />
+                        <stop offset="0%" stop-color="#f9ad6a" />
+                        <stop offset="80%" stop-color="#f9e07f" />
+                        <stop offset="100%" stop-color="grey" />
                     </linearGradient>
                 </defs>
 
@@ -104,16 +138,24 @@ $effect(() => {
     {:else}
         <p class="info">Loading map...</p>
     {/if}
-</div>
-
+    <div 
+        class="controls-container">
+    <button 
+        class="play-button {autoplayActive ? 'active' : ''}"
+        onclick={autoplayYears}
+        >&#9658;
+    </button>
     <input
         type="range"
         min="1961"
         max="2023"
         step="1"
         bind:value={selectedYear}
+        onclick={stopAutoplay}
         />
     <p class="info year">Year: {selectedYear}</p>
+</div>
+</div>
 
 <style>
 
@@ -125,19 +167,28 @@ $effect(() => {
     }
 
     .map {
-        border: solid var(--orange)
+        border: solid var(--yellow);
+        box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
     }
 
     .map-land {
-        fill: var(--orange);
+        fill: grey;
         stroke: var(--yellow);
         stroke-width: 0.4;
+        filter: drop-shadow(0px 8px 8px rgba(149, 157, 165, 0.2));
     }
+
 
     .spikes {
         fill-opacity: 0.9;
         stroke-width: 0;
         transition: all;
+    }
+
+    .controls-container {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
     }
 
     input[type="range"] {
@@ -148,23 +199,25 @@ $effect(() => {
         width: 70%;
         margin: auto;
         display: block;
-        cursor: grab;
         margin: 1rem auto;
+        flex: 1;
 }
 
     /***** Track Styles *****/
     /***** Chrome, Safari, Opera, and Edge Chromium *****/
     input[type="range"]::-webkit-slider-runnable-track {
-        background: var(--orange);
+        background: var(--yellow);
         height: 1.5rem;
         border-radius: 10px;
+        box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
     }
 
     /******** Firefox ********/
     input[type="range"]::-moz-range-track {
-        background: var(--orange);
+        background: var(--yellow);
         height: 1.5rem;
         border-radius: 5rem;
+        box-shadow: rgb(249, 224, 127) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
     }
 
     /***** Thumb Styles *****/
@@ -177,13 +230,27 @@ $effect(() => {
         width: 1.5rem;    
         transition: all;
         border-radius: 50%;
+        cursor: grab;
+
     }
 
     .year {
         text-align: center;
-        width: 100%;        
         text-decoration: underline;
         text-decoration-color: var(--red);
+        margin: 0.5rem;
+    }
+
+    .play-button {
+        height: 2.3rem;
+        width: 2.3rem;
+        margin: 0.5rem;
+        border-radius: 50%;
+    }
+
+    .play-button.active {
+        border: solid 1px var(--red);
+        box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
     }
 
     @media screen and (max-width: 1030px) {
@@ -193,11 +260,4 @@ $effect(() => {
             min-width: auto;
         }
     }
-
-    @media screen and (max-width: 650px) {
-        
-        
-
-    }
 </style>
-
