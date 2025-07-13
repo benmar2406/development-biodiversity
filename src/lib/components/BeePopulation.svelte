@@ -22,6 +22,11 @@ let hoveredCountry = $state("Hover over a country");
 let mapX = $state(200);
 let autoplayInterval = $state(null); 
 let autoplayActive = $state(false);
+//tooltip
+let tooltipVisible = $state(false);
+let tooltipX = $state(0);
+let tooltipY = $state(0);
+let tooltipContent = $state("");
 
 onMount(async () => {
     geojson = await json(`${base}/data/countries.json`);
@@ -44,7 +49,7 @@ onMount(async () => {
 
 });
 
-function spike(height) {
+const spike = (height) => {
   const width = 10; // base width of triangle
   return `M${-width / 2},0L0,${-height}L${width / 2},0Z`;
 }
@@ -59,7 +64,7 @@ const getValue = (countryCodeToDisplay) => {
 };
 
 $effect(() => {
-    innerWidth.current < 200 ? mapX = 100 : 250;
+    innerWidth.current < 600 ? mapX = 70 : 250;
 })
 
 //player
@@ -93,9 +98,28 @@ const autoplayYears = () => {
         }
     };
 
+    const showTooltip = (event, feature) => {
+        const code = +feature.properties.ISO_N3;
+        const value = getValue(code);
+        hoveredCountry = feature.properties.ADMIN;
+        tooltipContent = `${feature.properties.ADMIN}: ${value.toLocaleString('en-EN')} bees`;
+        tooltipVisible = true;
+        moveTooltip(event);
+    }
+
+    const moveTooltip = (event) => {
+        tooltipX = event.clientX + 10;
+        tooltipY = event.clientY + 10;
+    }
+
+    const hideTooltip = () => {
+        tooltipVisible = false;
+        hoveredCountry = "Hover over a country";
+    }
+
+
 </script>
 <div class="map-container">
-    <p class="info">Bees in: {hoveredCountry}</p>
     {#if geojson && dataReady}
         <div class="map" bind:clientWidth={width}>
             <svg class="map-land" {width} {height}>
@@ -121,9 +145,13 @@ const autoplayYears = () => {
                             {#key +feature.properties.ISO_N3}
                                 <g transform={`translate(${path.centroid(feature)[0]}, ${path.centroid(feature)[1]})`}>
                                     <path
-                                    d={spike(spikeScale(getValue(+feature.properties.ISO_N3)))}
-                                    class="spikes"
-                                    fill="url(#spike-gradient)"
+                                        d={spike(spikeScale(getValue(+feature.properties.ISO_N3)))}
+                                        class="spikes"
+                                        fill="url(#spike-gradient)"
+                                        onmouseenter={(e) => showTooltip(e, feature)}
+                                        onmousemove={(e) => moveTooltip(e)}
+                                        onmouseleave={hideTooltip}
+                                        role="tooltip"
                                     />
                                 </g>
                             {/key}
@@ -131,8 +159,16 @@ const autoplayYears = () => {
                     {/each}
                 </g>
             </svg>
-
         </div>
+        <!-- tooltip -->
+        {#if tooltipVisible}
+            <div 
+                class="tooltip info" 
+                style="top: {tooltipY}px; left: {tooltipX}px;"
+            >
+                {tooltipContent}
+            </div>
+        {/if}
     {:else}
         <p class="info">Loading map...</p>
     {/if}
@@ -183,6 +219,7 @@ const autoplayYears = () => {
         fill-opacity: 0.9;
         stroke-width: 0;
         transition: all;
+        cursor: pointer;
     }
 
     .controls-container {
@@ -255,6 +292,21 @@ const autoplayYears = () => {
     .play-button.active {
         border: solid 1px var(--red);
         box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    }
+
+    .tooltip {
+        position: fixed;
+        background: rgba(255, 255, 255, 0.9);
+        padding: 0.5rem 1rem;
+        border: 1px solid var(--yellow);
+        border-radius: 0.5rem;
+        box-shadow: rgba(0, 0, 0, 0.15) 2px 2px 6px;
+        pointer-events: none;
+        font-size: 0.9rem;
+        color: #333;
+        z-index: 1000;
+        max-width: 250px;
+        word-wrap: break-word;
     }
 
     @media screen and (max-width: 1030px) {
