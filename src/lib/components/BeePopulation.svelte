@@ -8,18 +8,20 @@ import { flip } from 'svelte/animate';
 import { innerWidth } from 'svelte/reactivity/window';
 import { base } from '$app/paths';
 
-
+//data
 let geojson = $state(null);
 let data = $state([]);
-let selectedYear = $state(1961);
 let dataReady = $state(false);
-let width = $state(1200);
-let height = 450;
+//geometry
 let projection = $state();
 let path = $state();
+//map specs
+let width = $state(1200);
+let height = 450;
+let selectedYear = $state(1961);
 let spikeScale = $state(0);
-let hoveredCountry = $state("Hover over a country");
 let mapX = $state(200);
+//autoplay
 let autoplayInterval = $state(null); 
 let autoplayActive = $state(false);
 //tooltip
@@ -28,7 +30,9 @@ let tooltipX = $state(0);
 let tooltipY = $state(0);
 let tooltipContent = $state("");
 
+// load and transform data
 onMount(async () => {
+
     geojson = await json(`${base}/data/countries.json`);
     projection = geoMercator().scale(400).translate([mapX, 550]);
     path = geoPath(projection);
@@ -49,11 +53,13 @@ onMount(async () => {
 
 });
 
+//define spike
 const spike = (height) => {
-  const width = 10; // base width of triangle
-  return `M${-width / 2},0L0,${-height}L${width / 2},0Z`;
+const width = 10; // base width of triangle
+return `M${-width / 2},0L0,${-height}L${width / 2},0Z`;
 }
 
+// find bee population value for country
 const getValue = (countryCodeToDisplay) => {
     const code = +countryCodeToDisplay;
     const found = data.find(d =>
@@ -63,6 +69,7 @@ const getValue = (countryCodeToDisplay) => {
     return found?.population ?? 0;
 };
 
+// adjusts the map perspective to a sustain interesting view for small screens
 $effect(() => {
     innerWidth.current < 600 ? mapX = 70 : 250;
 })
@@ -116,13 +123,17 @@ const autoplayYears = () => {
         tooltipVisible = false;
         hoveredCountry = "Hover over a country";
     }
-
-
 </script>
+<h2>Global development of bee population</h2>
 <div class="map-container">
     {#if geojson && dataReady}
-        <div class="map" bind:clientWidth={width}>
+        <div 
+            class="map" 
+            bind:clientWidth={width} 
+            style:height={`${height}px`}
+        >   
             <svg class="map-land" {width} {height}>
+                <!-- gradient for spikes -->
                 <defs>
                     <linearGradient id="spike-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
                         <stop offset="0%" stop-color="#f9ad6a" />
@@ -131,7 +142,7 @@ const autoplayYears = () => {
                     </linearGradient>
                 </defs>
 
-                <!-- Countries  -->
+                <!-- Countries -->
                 <g class="countries">
                     {#each geojson.features as feature}
                         <path d={path(feature)} />
@@ -170,7 +181,13 @@ const autoplayYears = () => {
             </div>
         {/if}
     {:else}
-        <p class="info">Loading map...</p>
+    <div class="loading-container">
+        <p 
+            class="info"
+            style:height={`${height}px`}
+            >Loading map...
+        </p>
+    </div>
     {/if}
     <div 
         class="controls-container">
@@ -195,9 +212,14 @@ const autoplayYears = () => {
 
 <style>
 
+    h2 {
+        text-align: center;
+        font-size: 1.3rem;
+        margin-bottom: 0.6rem;
+    }
+
     .map-container {
         margin: auto;
-        height: 500px;
         width: 70%;
         min-width: 800px;
     }
@@ -212,8 +234,8 @@ const autoplayYears = () => {
         stroke: var(--yellow);
         stroke-width: 0.4;
         filter: drop-shadow(0px 8px 8px rgba(149, 157, 165, 0.2));
+                height: 100%;
     }
-
 
     .spikes {
         fill-opacity: 0.9;
@@ -270,6 +292,12 @@ const autoplayYears = () => {
         border-radius: 50%;
         cursor: grab;
 
+    }
+
+    .loading-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .year {
