@@ -15,7 +15,7 @@ let dataReady = $state(false);
 //geometry
 let projection = $state();
 let path = $state();
-//map specs
+//map specs   
 let width = $state(1200);
 let height = 450;
 let selectedYear = $state(1961);
@@ -108,7 +108,6 @@ const autoplayYears = () => {
     const showTooltip = (event, feature) => {
         const code = +feature.properties.ISO_N3;
         const value = getValue(code);
-        hoveredCountry = feature.properties.ADMIN;
         tooltipContent = `${feature.properties.ADMIN}: ${value.toLocaleString('en-EN')} bees`;
         tooltipVisible = true;
         moveTooltip(event);
@@ -121,7 +120,6 @@ const autoplayYears = () => {
 
     const hideTooltip = () => {
         tooltipVisible = false;
-        hoveredCountry = "Hover over a country";
     }
 </script>
 <h2>Global development of bee population</h2>
