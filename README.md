@@ -8,7 +8,6 @@ To run the app locally, follow these steps:
 
 ## Prerequisites
     * Node.js, Vite and npm installed
-    * A Spoonacular API key (you can get one here)
 
 ## Start locally
     * navigate to main directory
