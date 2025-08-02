@@ -8,9 +8,10 @@ import { scaleLinear } from 'd3-scale';
 import { flip } from 'svelte/animate';
 import { innerWidth } from 'svelte/reactivity/window';
 import { base } from '$app/paths';
+import { width } from '$lib/shared';
 import Map from './Map.svelte';
 import Controls from './Controls.svelte';
-import { width } from '$lib/shared'
+import DevelopmentBeePopulation from '../lineChart/DevelopmentBeePopulation.svelte';
 
 //data
 let geojson = $state(null);
@@ -51,7 +52,6 @@ onMount(async () => {
         .range([0, 300]);
 
     dataReady = true;
-
 });
 
 //define spike
@@ -141,6 +141,7 @@ const autoplayYears = () => {
        <Controls {...playerProps}/>
     </div>
 </div>
+<DevelopmentBeePopulation/>
 
 <style>
 
@@ -164,7 +165,6 @@ const autoplayYears = () => {
     }
 
     
-
     @media screen and (max-width: 1030px) {
         
         .map-container {
