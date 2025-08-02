@@ -1,6 +1,6 @@
 <script>
     import '../app.css'
-    import BeePopulation from "$lib/components/BeePopulation.svelte";
+    import BeePopulation from "$lib/components/map/BeePopulation.svelte";
 </script>
 
 <main>

@@ -10,7 +10,7 @@ import { innerWidth } from 'svelte/reactivity/window';
 import { base } from '$app/paths';
 import Map from './Map.svelte';
 import Controls from './Controls.svelte';
-import { width, tooltipX, tooltipY } from '$lib/shared'
+import { width } from '$lib/shared'
 
 //data
 let geojson = $state(null);
@@ -29,10 +29,7 @@ let mapX = $state(200);
 let autoplayInterval = $state(null); 
 let autoplayActive = $state(false);
 //tooltip
-let tooltipVisible = $state(false);
-//let tooltipX = $state(0);
-//let tooltipY = $state(0);
-let tooltipContent = $state("");
+
 
 // load and transform data
 onMount(async () => {
@@ -109,25 +106,7 @@ const autoplayYears = () => {
         }
     };
 
-    const showTooltip = (event, feature) => {
-        const code = +feature.properties.ISO_N3;
-        const value = getValue(code);
-        tooltipContent = `${feature.properties.ADMIN}: ${value.toLocaleString('en-EN')} bees`;
-        tooltipVisible = true;
-        $tooltipX = event.clientX + 10;
-        $tooltipY = event.clientY + 10;
-        //moveTooltip(event);
-    }
-
-    const moveTooltip = (event) => {
-        $tooltipX = event.clientX + 10;
-        $tooltipY = event.clientY + 10;
-    }
-
-    const hideTooltip = () => {
-        tooltipVisible = false;
-    }
-
+    
     let mapProps = $derived(
         {
             spikeScale,
@@ -136,11 +115,7 @@ const autoplayYears = () => {
             height,
             path,
             geojson,
-            dataReady,
-            tooltipContent,
-            tooltipVisible,
-            showTooltip,
-            hideTooltip
+            dataReady
         }
     );
 

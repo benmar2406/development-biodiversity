@@ -1,6 +1,11 @@
 <script>
 
-import { width, tooltipX, tooltipY } from '$lib/shared'
+import { width } from '$lib/shared'
+
+let tooltipVisible = $state(false);
+let tooltipX = $state(0);
+let tooltipY = $state(0);
+let tooltipContent = $state("");
 
     let { 
         height, 
@@ -9,13 +14,28 @@ import { width, tooltipX, tooltipY } from '$lib/shared'
         spike, 
         spikeScale,
         getValue, 
-        showTooltip, 
-        moveTooltip, 
-        hideTooltip, 
-        tooltipVisible, 
-        tooltipContent,
         path,
     } = $props();
+
+    const showTooltip = (event, feature) => {
+        const code = +feature.properties.ISO_N3;
+        const value = getValue(code);
+        tooltipContent = `${feature.properties.ADMIN}: ${value.toLocaleString('en-EN')} bees`;
+        tooltipVisible = true;
+        $tooltipX = event.clientX + 10;
+        $tooltipY = event.clientY + 10;
+        //moveTooltip(event);
+    }
+
+    const moveTooltip = (event) => {
+        tooltipX = event.clientX + 10;
+        tooltipY = event.clientY + 10;
+    }
+
+    const hideTooltip = () => {
+        tooltipVisible = false;
+    }
+
 
 
 </script>
@@ -69,7 +89,7 @@ import { width, tooltipX, tooltipY } from '$lib/shared'
         {#if tooltipVisible}
             <div 
                 class="tooltip info" 
-                style="top: {$tooltipY}px; left: {$tooltipX}px;"
+                style="top: {tooltipY}px; left: {tooltipX}px;"
             >
                 {tooltipContent}
             </div>
