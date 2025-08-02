@@ -1,7 +1,6 @@
 <script>
     import '../app.css'
     import BeePopulation from "$lib/components/BeePopulation.svelte";
-    import DevelopmentBiodiversity from "$lib/components/DevelopmentBiodiversity.svelte";
 </script>
 
 <main>
