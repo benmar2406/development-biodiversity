@@ -11,7 +11,6 @@ import { base } from '$app/paths';
 import { width } from '$lib/shared';
 import Map from './Map.svelte';
 import Controls from './Controls.svelte';
-import DevelopmentBeePopulation from '../lineChart/DevelopmentBeePopulation.svelte';
 
 //data
 let geojson = $state(null);
@@ -141,7 +140,6 @@ const autoplayYears = () => {
        <Controls {...playerProps}/>
     </div>
 </div>
-<DevelopmentBeePopulation/>
 
 <style>
 

@@ -5,7 +5,8 @@
 <button 
     class="play-button {autoplayActive ? 'active' : ''}"
     onclick={autoplayYears}
-    >&#9658;
+>
+    {autoplayActive ? '⏸' : '▶'}
 </button>
 <input
     type="range"
@@ -62,12 +63,6 @@
         border-radius: 50%;
         cursor: grab;
 
-    }
-
-    .loading-container {
-        display: flex;
-        align-items: center;
-        justify-content: center;
     }
 
     .year {

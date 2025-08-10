@@ -1,6 +1,4 @@
 <script>
-d3.
-
     import { scaleLinear, scaleTime } from "d3";
     import { extent, max } from 'd3-array';
     import { line, curveLinear } from 'd3-shape';
@@ -19,7 +17,7 @@ d3.
         csv(`${base}/data/bees.csv`, row => ({
             ...row,
             year: new Date(row["Year Code"]),
-            value: +row.Value  // convert value to number
+            value: +row.Value  
         })).then((csvData) => {
             // Group data by year and calculate total value for each year
             const yearlySums = d3.rollups(
