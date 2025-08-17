@@ -14,7 +14,7 @@ let tooltipContent = $state("");
         spike, 
         spikeScale,
         getValue, 
-        path,
+        path
     } = $props();
 
     const showTooltip = (event, feature) => {
@@ -40,7 +40,7 @@ let tooltipContent = $state("");
 
 </script>
 
-{#if geojson && dataReady}
+{#if geojson && dataReady && spike && spikeScale && getValue && path}
         <div 
             class="map" 
             bind:clientWidth={$width} 

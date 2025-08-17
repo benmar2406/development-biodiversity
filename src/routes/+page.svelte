@@ -10,8 +10,9 @@
 
 <style>
     main {
-        width: 80%;
+        width: 90%;
         margin: 3rem auto;
+        max-width: 1000px;
     }
 
 
@@ -25,10 +26,9 @@
         border-radius: 1.6rem;
     }
 
-     @media screen and (max-width: 1030px) {
-        
-        main{
-            width: 95%;
+    @media screen and (min-width: 1500px) {
+        main {
+            width: 80%;
         }
     }
 
