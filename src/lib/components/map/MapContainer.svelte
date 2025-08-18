@@ -13,7 +13,6 @@ import Map from './Map.svelte';
 import Controls from './Controls.svelte';
 
 let  { data, dataReady } = $props();
-
 //data
 let geojson = $state(null);
 //geometry
@@ -116,14 +115,6 @@ return `M${-width / 2},0L0,${-height}L${width / 2},0Z`;
         }
     );
 
-    let playerProps = $derived(
-        { 
-            autoplayActive, 
-            autoplayYears, 
-            selectedYear 
-        }
-    );
-
 </script>
 
 <section>
@@ -135,7 +126,12 @@ return `M${-width / 2},0L0,${-height}L${width / 2},0Z`;
         <div
             class="controls-container"
         >
-        <Controls {...playerProps}/>
+        <Controls 
+            {autoplayActive}
+            {autoplayYears} 
+            bind:selectedYear
+            {getValue}
+        />
         </div>
     </div>
 </section>

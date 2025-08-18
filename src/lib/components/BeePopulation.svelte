@@ -2,8 +2,8 @@
     import * as d3 from 'd3';
     import { onMount } from "svelte";
     import { csv } from 'd3-fetch';
-    import MapContainer from "./MapContainer.svelte";
-    import LineChartContainer from '../lineChart/lineChartContainer.svelte';
+    import MapContainer from "./map/MapContainer.svelte";
+    import LineChartContainer from './lineChart/lineChartContainer.svelte';
     import { base } from "$app/paths";
 
     let geojson = $state(null);

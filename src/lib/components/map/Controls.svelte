@@ -1,24 +1,33 @@
 <script>
-    let { autoplayActive, autoplayYears, selectedYear, stopAutoplay } = $props();
+  let {
+    selectedYear = $bindable(1961),     
+    autoplayActive,
+    autoplayYears,
+    stopAutoplay,
+    getValue
+  } = $props();
+
 </script>
 
-<button 
-    class="play-button {autoplayActive ? 'active' : ''}"
-    onclick={autoplayYears}
+<button
+  class="play-button {autoplayActive ? 'active' : ''}"
+  onclick={autoplayYears}    
 >
-    {autoplayActive ? '⏸' : '▶'}
+  {autoplayActive ? '⏸' : '▶'}
 </button>
+
 <input
-    type="range"
-    min="1961"
-    max="2023"
-    step="1"
-    bind:value={selectedYear}
-    onclick={stopAutoplay}
-    />
+  type="range"
+  min="1961"
+  max="2023"
+  step="1"
+  bind:value={selectedYear}
+/>
+
 <div class="year-container">
-    <p class="info year">Year: {selectedYear}</p>
+  <p class="info year">Year: {selectedYear}</p>  
 </div>
+
 
 <style>
     input[type="range"] {

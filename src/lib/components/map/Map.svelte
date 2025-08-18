@@ -7,6 +7,8 @@ let tooltipX = $state(0);
 let tooltipY = $state(0);
 let tooltipContent = $state("");
 
+$inspect(tooltipY)
+
     let { 
         height, 
         geojson, 
@@ -22,14 +24,14 @@ let tooltipContent = $state("");
         const value = getValue(code);
         tooltipContent = `${feature.properties.ADMIN}: ${value.toLocaleString('en-EN')} bees`;
         tooltipVisible = true;
-        $tooltipX = event.clientX + 10;
-        $tooltipY = event.clientY + 10;
+        tooltipX = event.clientX;
+        tooltipY = event.clientY;
         //moveTooltip(event);
     }
 
     const moveTooltip = (event) => {
-        tooltipX = event.clientX + 10;
-        tooltipY = event.clientY + 10;
+        tooltipX = event.clientX;
+        tooltipY = event.clientY;
     }
 
     const hideTooltip = () => {
@@ -128,7 +130,7 @@ let tooltipContent = $state("");
     }
 
     .tooltip {
-        position: absolute;
+        position: fixed;
         background: rgba(255, 255, 255, 0.9);
         padding: 0.5rem 1rem;
         border: 1px solid var(--yellow);
@@ -140,5 +142,6 @@ let tooltipContent = $state("");
         z-index: 1000;
         max-width: 250px;
         word-wrap: break-word;
+        margin: 1rem;
     }
     </style>

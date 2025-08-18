@@ -77,7 +77,7 @@
 </script>
 
 
-<div class="chart-container" bind:clientWidth={width} bind:this={elementToObserve}>
+<div class="chart-container" bind:clientWidth={width}>
     <svg {width} {height}>
         {#if lineGenerator && filteredData && observer.isVisible}
             <path 
@@ -86,7 +86,7 @@
                 stroke-width={1.5}
             />
         {/if}
-        {#if filteredData && drawCircles}
+        {#if filteredData && drawCircles && observer.isVisible}
             <g in:fade={{duration: 800, delay: lineAnimDuration + 100}}>
                 {#each filteredData as point, index}
                     {#if index !== 0 && index !== filteredData.length - 1}
@@ -158,6 +158,7 @@
             {/if}  
     </svg>
 </div>
+<div bind:this={elementToObserve}></div>
 
 <style>
 
