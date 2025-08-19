@@ -5,10 +5,18 @@
     import { draw, fade } from 'svelte/transition';
     import { onMount } from 'svelte';
     import * as d3 from 'd3';
-    import { useVisibilityObserver } from '$lib/utils/useVisibilityObserver.svelte.js'
+    import { useVisibilityObserver } from '$lib/utils/useVisibilityObserver.svelte.js';
+    import Tooltip from "../Tooltip.svelte";
     
 
     let { dataReady, data } = $props();
+
+    let tooltipX = $state(null);
+    let tooltipY = $state(null);
+    let tooltipVisible = $state(false);
+    let tooltipYear = $state("");
+    let tooltipValue = $state("");
+    let tooltipContent = $derived(`In ${tooltipYear} there were ${tooltipValue}m bees`)
 
     //chart defs
     let width = $state(0);
@@ -24,7 +32,6 @@
 
     let elementToObserve;
     let observer = $state(null)
-    
 
     const lineAnimDuration = 4000;
 
@@ -36,8 +43,20 @@
     });
 
         observer = useVisibilityObserver(elementToObserve);
-    })
-   
+    });
+
+    const showToolTip = (event, point) => {
+        tooltipX = event.clientX;
+        tooltipY = event.clientY;
+        tooltipVisible = true;
+        tooltipYear = point.year;
+        tooltipValue = Math.round(point.total / 1000000);
+        console.log("tooltip func")
+    }
+
+    const hideToolTip = () => {
+        tooltipVisible = false;
+    }
 
 
     let xScale = $derived(
@@ -94,6 +113,9 @@
                             cx={xScale(new Date(point.year, 0, 1))}
                             cy={yScale(point.total)}
                             r="5"
+                            onmouseenter={(event) => showToolTip(event, point)}
+                            onmouseleave={() => hideToolTip()}
+                            role="tooltip"
                         />
                     {:else if index  === filteredData.length - 1}
                         <image
@@ -102,6 +124,9 @@
                             y={yScale(point.total) - 15} 
                             width="30"
                             height="30"
+                            onmouseenter={(event) => showToolTip(event, point)}
+                            onmouseleave={() => hideToolTip()}
+                            role="tooltip"
                         />
                     {/if}
                 {/each}
@@ -159,6 +184,9 @@
     </svg>
 </div>
 <div bind:this={elementToObserve}></div>
+{#if tooltipVisible}
+   <Tooltip {tooltipContent} {tooltipX} {tooltipY}/>
+{/if}
 
 <style>
 
@@ -191,4 +219,21 @@
         stroke: var(--dark);
         stroke-width: 1;
     }
+
+    .tooltip {
+        position: fixed;
+        background: rgba(255, 255, 255, 0.9);
+        padding: 0.3rem 1rem;
+        border: 1px solid var(--yellow);
+        border-radius: 0.5rem;
+        box-shadow: rgba(0, 0, 0, 0.15) 2px 2px 6px;
+        pointer-events: none;
+        font-size: 0.9rem;
+        color: #333;
+        z-index: 1000;
+        max-width: 250px;
+        word-wrap: break-word;
+        margin: 1rem;
+    }
+
 </style>
