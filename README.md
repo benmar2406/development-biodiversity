@@ -20,5 +20,6 @@ To run the app locally, follow these steps:
 ## Create build
    * setup depending on hosting
    * npm run build
-   * 
+
+     
 <img width="489" height="350" alt="Bildschirmfoto 2025-08-20 um 11 38 38" src="https://github.com/user-attachments/assets/30afc3ba-7bb6-42ee-9391-d6e35717e406" />
