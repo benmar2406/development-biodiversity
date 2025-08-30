@@ -102,7 +102,6 @@
             <path 
                 in:draw={{duration: lineAnimDuration} }
                 d={lineGenerator(filteredData)}
-                stroke-width={1.5}
             />
         {/if}
         {#if filteredData && drawCircles && observer.isVisible}
@@ -112,7 +111,7 @@
                         <circle
                             cx={xScale(new Date(point.year, 0, 1))}
                             cy={yScale(point.total)}
-                            r="5"
+                            r="3"
                             onmouseenter={(event) => showToolTip(event, point)}
                             onmouseleave={() => hideToolTip()}
                             role="tooltip"
@@ -122,8 +121,6 @@
                             href={beeMarker}
                             x={xScale(new Date(point.year, 0, 1)) - 15} 
                             y={yScale(point.total) - 15} 
-                            width="30"
-                            height="30"
                             onmouseenter={(event) => showToolTip(event, point)}
                             onmouseleave={() => hideToolTip()}
                             role="tooltip"
@@ -203,7 +200,7 @@
 
     path {
         fill: none;
-        stroke-width: 0.2rem;
+        stroke-width: 0.1rem;
         stroke: var(--orange)
     }
 
@@ -220,20 +217,10 @@
         stroke-width: 1;
     }
 
-    .tooltip {
-        position: fixed;
-        background: rgba(255, 255, 255, 0.9);
-        padding: 0.3rem 1rem;
-        border: 1px solid var(--yellow);
-        border-radius: 0.5rem;
-        box-shadow: rgba(0, 0, 0, 0.15) 2px 2px 6px;
-        pointer-events: none;
-        font-size: 0.9rem;
-        color: #333;
-        z-index: 1000;
-        max-width: 250px;
-        word-wrap: break-word;
-        margin: 1rem;
+    image {
+        width: 20px;
+        height: 20px;
+        transform: translate(10px)
     }
 
 </style>
