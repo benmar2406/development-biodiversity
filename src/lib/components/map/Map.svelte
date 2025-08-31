@@ -1,6 +1,7 @@
 <script>
 
     import { width } from '$lib/shared';
+    import { d3Drag } from '$lib/attachments/d3Drag';
     import Tooltip from '../Tooltip.svelte';
 
     let tooltipVisible = $state(false);
@@ -17,7 +18,8 @@
         spike, 
         spikeScale,
         getValue, 
-        path
+        path,
+        onDrag
     } = $props();
 
     const showTooltip = (event, feature) => {
@@ -28,7 +30,6 @@
         tooltipVisible = true;
         tooltipX = event.clientX;
         tooltipY = event.clientY;
-        //moveTooltip(event);
     }
 
     const moveTooltip = (event) => {
@@ -48,7 +49,11 @@
         bind:clientWidth={$width} 
         style:height={`${height}px`}
     >   
-        <svg class="map-land" width={$width} {height}>
+        <svg 
+            class="map-land" 
+            width={$width} 
+            {height} 
+            {@attach d3Drag(onDrag)}>
             <!-- gradient for spikes -->
             <defs>
                 <linearGradient id="spike-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -98,7 +103,10 @@
 {/if}
 <!-- tooltip -->
 {#if tooltipVisible}
-    <Tooltip {tooltipContent} {tooltipX} {tooltipY} />
+    <Tooltip 
+        {tooltipContent} 
+        {tooltipX} 
+        {tooltipY} />
 {/if}
 
 <style>
@@ -114,6 +122,11 @@
         stroke-width: 0.4;
         filter: drop-shadow(0px 8px 8px rgba(149, 157, 165, 0.2));
                 height: 100%;
+        cursor: grab;
+    }
+
+    .map-land:drag {
+
     }
 
     .spikes {

@@ -212,7 +212,7 @@
     }
 
     circle {
-        fill: var(--yellow);
+        fill: var(--yellow);    
         stroke: var(--dark);
         stroke-width: 1;
     }
