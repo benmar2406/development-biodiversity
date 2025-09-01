@@ -103,11 +103,6 @@
         }
     };
 
-    const onDrag = ({ dx, dy }) => {
-        mapX += dx;
-        mapY += dy;
-    }
-
     
     let mapProps = $derived(
         {
@@ -129,7 +124,6 @@
     <div class="map-container">
         <Map
             {...mapProps}
-            {onDrag}
         />
         
         <div
