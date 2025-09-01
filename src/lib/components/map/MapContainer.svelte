@@ -8,7 +8,7 @@
     import { flip } from 'svelte/animate';
     import { innerWidth } from 'svelte/reactivity/window';
     import { base } from '$app/paths';
-    import { width } from '$lib/shared';
+    import { scaleFactor } from '$lib/shared';
     import Map from './Map.svelte';
     import Controls from './Controls.svelte';
 
@@ -42,8 +42,8 @@
         geojson = await json(`${base}/data/countries.json`);
     });
 
-     // recompute projection+path when mapX/mapY change
-    let projection = $derived(d3.geoMercator().scale(400).translate([mapX, mapY]));
+     // recompute projection+path when mapX or mapY change
+    let projection = $derived(d3.geoMercator().scale($scaleFactor).translate([mapX, mapY]));
     let path = $derived(d3.geoPath().projection(projection));
 
     //generate scale

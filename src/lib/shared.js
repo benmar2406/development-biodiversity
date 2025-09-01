@@ -3,4 +3,6 @@
 	export let width = writable(1200);
 	export let tooltipX = writable(0);
 	export let tooltipY = writable(0);
+	export let scaleFactor = writable(400);
+
 

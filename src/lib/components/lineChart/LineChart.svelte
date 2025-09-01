@@ -22,7 +22,7 @@
     let width = $state(0);
     const height = 350;
     const margin = { top: 70, right: 20, bottom: 40, left: 60 };
-    let numberTicksY = 5;
+    let numberTicksY = 3;
     let drawCircles = $state(false);
     const beeMarker = 'bee.webp'
 
@@ -73,6 +73,7 @@
         ? scaleLinear()
             .domain(extent(data, (d) => d.total))
             .range([height - margin.bottom, margin.top])
+            .nice(numberTicksY)
         : null
     );
 

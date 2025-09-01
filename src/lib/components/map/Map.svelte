@@ -1,7 +1,7 @@
 <script>
 
-    import { width } from '$lib/shared';
-    import { d3Drag } from '$lib/attachments/d3Drag';
+    import { width, scaleFactor } from '$lib/shared';
+    import { zoomPan } from '$lib/attachments/zoomPan';
     import Tooltip from '../Tooltip.svelte';
 
     let tooltipVisible = $state(false);
@@ -54,7 +54,9 @@
             class="map-land" 
             width={$width} 
             {height} 
-            {@attach d3Drag(onDrag)}>
+            style="touch-action:none; cursor: grab;"
+        >
+            <g class="viewport" {@attach zoomPan({ min: 0.4, max: 3 })}>
             <!-- gradient for spikes -->
             <defs>
                 <linearGradient id="spike-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -95,6 +97,7 @@
                         {/key}
                     {/if}
                 {/each}
+            </g>
             </g>
         </svg>
     </div>
