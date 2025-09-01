@@ -22,4 +22,4 @@ To run the app locally, follow these steps:
    * npm run build
 
      
-<img width="489" height="350" alt="Bildschirmfoto 2025-08-20 um 11 38 38" src="https://github.com/user-attachments/assets/30afc3ba-7bb6-42ee-9391-d6e35717e406" />
+<img width="521" height="386" alt="image" src="https://github.com/user-attachments/assets/841cf667-a679-418f-b6d5-5816a82b1282" />
