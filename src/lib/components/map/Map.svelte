@@ -1,6 +1,6 @@
 <script>
 
-    import { width, scaleFactor } from '$lib/shared';
+    import { width } from '$lib/shared';
     import { zoomPan } from '$lib/attachments/zoomPan';
     import Tooltip from '../Tooltip.svelte';
 
