@@ -12,6 +12,7 @@
     import Map from './Map.svelte';
     import Controls from './Controls.svelte';
 
+
     let  { data, dataReady } = $props();
 
     //data
@@ -30,9 +31,10 @@
     let autoplayActive = $state(false);
 
     //define spike
+    const baseWidth = 10; //global because needed for underlines in child component
+
     const spike = (height) => {
-    const width = 10; // base width of triangle
-    return `M${-width / 2},0L0,${-height}L${width / 2},0Z`;
+        return `M${-baseWidth / 2},0L0,${-height}L${baseWidth / 2},0Z`;
     }
 
     // load and transform data
@@ -69,8 +71,6 @@
         );
         return found?.value ?? 0;
     };
-
-    $inspect(mapX)
     
     //player
     const autoplayYears = () => {
@@ -118,6 +118,7 @@
             path,
             geojson,
             dataReady,
+            baseWidth
         }
     );
 

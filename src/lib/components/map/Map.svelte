@@ -19,7 +19,8 @@
         spikeScale,
         getValue, 
         path,
-        onDrag
+        onDrag,
+        baseWidth
     } = $props();
 
     const showTooltip = (event, feature) => {
@@ -79,11 +80,16 @@
                                 <path
                                     d={spike(spikeScale(getValue(+feature.properties.ISO_N3)))}
                                     class="spikes"
-                                    fill="url(#spike-gradient)"
+                                    fill="#f9ad6a"
                                     onmouseenter={(e) => showTooltip(e, feature)}
                                     onmousemove={(e) => moveTooltip(e)}
                                     onmouseleave={hideTooltip}
                                     role="tooltip"
+                                />
+                                <line 
+                                    x1={-baseWidth / 1.3}
+                                    x2={baseWidth / 1.3}
+                                
                                 />
                             </g>
                         {/key}

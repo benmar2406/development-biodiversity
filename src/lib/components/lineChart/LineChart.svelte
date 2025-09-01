@@ -206,8 +206,8 @@
 
     text {
         font-family: 'Poppins';
-        font-weight: 600;
-        font-size: 0.7rem;
+        font-weight: 400;
+        font-size: 0.6rem;
         fill: var(--bright);
     }
 
