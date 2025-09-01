@@ -21,7 +21,7 @@
     //chart defs
     let width = $state(0);
     const height = 350;
-    const margin = { top: 40, right: 20, bottom: 40, left: 60 };
+    const margin = { top: 70, right: 20, bottom: 40, left: 60 };
     let numberTicksY = 5;
     let drawCircles = $state(false);
     const beeMarker = 'bee.webp'
@@ -98,6 +98,13 @@
 
 <div class="chart-container" bind:clientWidth={width}>
     <svg {width} {height}>
+        <text
+            x={width / 2}
+            y={20}
+            text-anchor="middle"
+            class="chart-title"
+            >Development of global bee population
+        </text>
         {#if lineGenerator && filteredData && observer.isVisible}
             <path 
                 in:draw={{duration: lineAnimDuration} }
@@ -194,13 +201,17 @@
         width: 100%;
     }
 
+    .chart-title {
+        font-size: 0.7rem;
+    }
+
     line {
         stroke: var(--bright);
     }
 
     path {
         fill: none;
-        stroke-width: 0.1rem;
+        stroke-width: 0.16rem;
         stroke: var(--orange)
     }
 
@@ -215,6 +226,10 @@
         fill: var(--yellow);    
         stroke: var(--dark);
         stroke-width: 1;
+    }
+
+     circle:hover {
+        cursor: pointer;
     }
 
     image {
