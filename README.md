@@ -1,5 +1,5 @@
 
-<img width="1108" height="577" alt="Bildschirmfoto 2025-08-18 um 14 26 11" src="https://github.com/user-attachments/assets/19fe9cbf-820c-48be-a99c-0927726d97f0" />
+<img width="1066" height="532" alt="image" src="https://github.com/user-attachments/assets/c577f7bf-c339-4c3e-9506-af554c094f79" />
 
 # Interactive Map - global bee population
 
