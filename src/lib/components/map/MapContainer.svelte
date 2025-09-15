@@ -63,10 +63,10 @@
     const getValue = (countryCodeToDisplay) => {
 
         if (!Array.isArray(data) || selectedYear == null) return 0;
-
+        
         const code = +countryCodeToDisplay;
         const found = data.find(d =>
-            d.countryCode === code &&
+            d.countryCode === code &&   
             d.year === selectedYear
         );
         return found?.value ?? 0;
