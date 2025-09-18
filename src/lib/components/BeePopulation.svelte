@@ -32,9 +32,6 @@
         )
     });
 
-    $inspect(data)
-
-
 </script>
 
 <MapContainer {data} {dataReady}/>

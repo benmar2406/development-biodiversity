@@ -19,7 +19,6 @@
         spikeScale,
         getValue, 
         path,
-        onDrag,
         baseWidth
     } = $props();
 
