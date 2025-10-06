@@ -133,10 +133,6 @@
         cursor: grab;
     }
 
-    .map-land:drag {
-
-    }
-
     .spikes {
         fill-opacity: 0.9;
         stroke-width: 0;

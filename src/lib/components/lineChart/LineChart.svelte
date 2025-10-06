@@ -51,7 +51,6 @@
         tooltipVisible = true;
         tooltipYear = point.year;
         tooltipValue = Math.round(point.total / 1000000);
-        console.log("tooltip func")
     }
 
     const hideToolTip = () => {
